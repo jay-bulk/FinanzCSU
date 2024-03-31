@@ -13,15 +13,13 @@ public partial class Transaction
     [Key]
     public int TransactionID { get; set; }
 
-    public int? MonthID { get; set; }
+    [StringLength(15)]
+    [Unicode(false)]
+    public string MonthID { get; set; }
 
-    public int? BudgetID { get; set; }
+    public int? UserBudgetID { get; set; }
 
     public int? CategoryID { get; set; }
-
-    [StringLength(50)]
-    [Unicode(false)]
-    public string CategoryName { get; set; }
 
     [Column(TypeName = "decimal(10, 2)")]
     public decimal? TransactionAmount { get; set; }
@@ -29,4 +27,12 @@ public partial class Transaction
     [StringLength(50)]
     [Unicode(false)]
     public string Memo { get; set; }
+
+    [ForeignKey("CategoryID")]
+    [InverseProperty("Transactions")]
+    public virtual Category Category { get; set; }
+
+    [ForeignKey("UserBudgetID")]
+    [InverseProperty("Transactions")]
+    public virtual UserBudget UserBudget { get; set; }
 }

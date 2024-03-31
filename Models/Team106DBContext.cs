@@ -19,6 +19,8 @@ public partial class Team106DBContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<LoginInfo> LoginInfos { get; set; }
+
     public virtual DbSet<MonthlyAllocation> MonthlyAllocations { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
@@ -26,29 +28,46 @@ public partial class Team106DBContext : DbContext
     public virtual DbSet<UserBudget> UserBudgets { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=BUSCISSQL1901\\CISWEB;Initial Catalog=Team106DB;Persist Security Info=True;User ID=javan;Password=script");
+        // warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=buscissql1901\\cisweb;Initial Catalog=Team106DB;Persist Security Info=True;User ID=javan;Password=script;Encrypt=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryID).HasName("PK__Category__1908C5D9118A11CA");
+            entity.HasKey(e => e.CategoryID).HasName("PK__Category__19093A2BD1E87E22");
+        });
+
+        modelBuilder.Entity<LoginInfo>(entity =>
+        {
+            entity.HasKey(e => e.UserID).HasName("PK__LoginInf__1788CCACEFDC2D53");
         });
 
         modelBuilder.Entity<MonthlyAllocation>(entity =>
         {
-            entity.HasKey(e => e.AllocationID).HasName("PK__MonthlyA__B3C6D6AB385204F8");
+            entity.HasKey(e => e.AllocationID).HasName("PK__MonthlyA__B3C6D6AB3675512A");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.MonthlyAllocations).HasConstraintName("CategoryAllocationFK");
+
+            entity.HasOne(d => d.UserBudget).WithMany(p => p.MonthlyAllocations).HasConstraintName("BudgetAllocationFK");
         });
 
         modelBuilder.Entity<Transaction>(entity =>
         {
-            entity.HasKey(e => e.TransactionID).HasName("PK__Transact__55433A4BC0FBA3F8");
+            entity.HasKey(e => e.TransactionID).HasName("PK__Transact__55433A4B83BC2D93");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Transactions).HasConstraintName("CategoryTransactionFK");
+
+            entity.HasOne(d => d.UserBudget).WithMany(p => p.Transactions).HasConstraintName("BudgetTransactionFK");
         });
 
         modelBuilder.Entity<UserBudget>(entity =>
         {
-            entity.HasKey(e => e.BudgetID).HasName("PK__UserBudg__E38E79C4473E5E7D");
+            entity.HasKey(e => e.UserBudgetID).HasName("PK__UserBudg__43FACCA5446904C8");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserBudgets)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserID");
         });
 
         OnModelCreatingPartial(modelBuilder);

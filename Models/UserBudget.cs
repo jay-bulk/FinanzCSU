@@ -11,8 +11,20 @@ namespace FinanzCSU.Models;
 [Table("UserBudget")]
 public partial class UserBudget
 {
-    public int? UserID { get; set; }
-
     [Key]
+    public int UserBudgetID { get; set; }
+
     public int BudgetID { get; set; }
+
+    public int UserID { get; set; }
+
+    [InverseProperty("UserBudget")]
+    public virtual ICollection<MonthlyAllocation> MonthlyAllocations { get; set; } = new List<MonthlyAllocation>();
+
+    [InverseProperty("UserBudget")]
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+    [ForeignKey("UserID")]
+    [InverseProperty("UserBudgets")]
+    public virtual LoginInfo User { get; set; }
 }

@@ -11,12 +11,16 @@ namespace FinanzCSU.Models;
 [Table("Category")]
 public partial class Category
 {
+    [Key]
+    public int CategoryID { get; set; }
+
     [StringLength(50)]
     [Unicode(false)]
     public string CategoryName { get; set; }
 
-    public int? BudgetID { get; set; }
+    [InverseProperty("Category")]
+    public virtual ICollection<MonthlyAllocation> MonthlyAllocations { get; set; } = new List<MonthlyAllocation>();
 
-    [Key]
-    public int CategoryID { get; set; }
+    [InverseProperty("Category")]
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

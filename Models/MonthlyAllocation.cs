@@ -14,10 +14,22 @@ public partial class MonthlyAllocation
     [Key]
     public int AllocationID { get; set; }
 
+    [StringLength(15)]
+    [Unicode(false)]
+    public string MonthID { get; set; }
+
+    public int? UserBudgetID { get; set; }
+
     public int? CategoryID { get; set; }
 
     [Column(TypeName = "decimal(10, 2)")]
-    public decimal? MonthAllocation { get; set; }
+    public decimal? Allocation { get; set; }
 
-    public int? MonthID { get; set; }
+    [ForeignKey("CategoryID")]
+    [InverseProperty("MonthlyAllocations")]
+    public virtual Category Category { get; set; }
+
+    [ForeignKey("UserBudgetID")]
+    [InverseProperty("MonthlyAllocations")]
+    public virtual UserBudget UserBudget { get; set; }
 }
