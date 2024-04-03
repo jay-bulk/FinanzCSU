@@ -1,18 +1,17 @@
 ﻿@model FinanzCSU.Models.UserBudget
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create Budget";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
 <h4>UserBudget</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BudgetID" />
             <div class="form-group">
                 <label asp-for="BudgetID" class="control-label"></label>
                 <input asp-for="BudgetID" class="form-control" />
@@ -20,11 +19,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="UserID" class="control-label"></label>
-                <select asp-for="UserID" class="form-control" asp-items="ViewBag.UserID"></select>
-                <span asp-validation-for="UserID" class="text-danger"></span>
+                <select asp-for="UserID" class ="form-control" asp-items="ViewBag.UserID"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
