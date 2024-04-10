@@ -7,27 +7,22 @@ using System.Security.Claims;
 
 namespace FinanzCSU.Controllers
 {
-    public class BudgetController : Controller
+    public class RestrictController : Controller
     {
         private readonly Team106DBContext _context;
 
-        public BudgetController(Team106DBContext context)
+        public RestrictController(Team106DBContext context)
         {
             _context = context;
         }
 
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBudget()
+        public async IActionResult CreateTransaction()
         {
             int userID = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(id => id.Type == ClaimTypes.Sid).Value);
 
-            UserBudget budget = new() { UserID = userID };
-
-            _context.Add(budget);
-
-            return View();
+            return View(await )
 
         }
 
@@ -76,9 +71,9 @@ namespace FinanzCSU.Controllers
         [Authorize]
         public IActionResult AddTransaction()
         {
-            Transactions<Transaction> transactions = GetTransactions();
+            Budget aBudget = GetBudget();
 
-            if (transactions.Any())
+            if (aBudget.LineItems().Any())
             {
                 int userID = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
 
@@ -87,8 +82,8 @@ namespace FinanzCSU.Controllers
 
                 foreach (Transaction aTransaction in transactions)
                 {
-                    Transaction transaction = new() { TransactionAmount = aTransaction.TransactionAmount, UserBudgetID = aTransaction.UserBudgetID };
-                    _context.Add(transaction);
+                    Transaction aTransaction = new() { TransactionID = aTransaction.TransactionID, TransactionAmount = aTransaction.TransactionAmount,  = orderPK };
+                    _context.Add(aDetail);
                 }
 
                 _context.SaveChanges();
@@ -114,12 +109,6 @@ namespace FinanzCSU.Controllers
         {
             UserBudget aBudget = HttpContext.Session.GetObject<UserBudget>("UserBudget") ?? new UserBudget();
             return aBudget;
-        }
-
-        private List<Transaction> GetTransactions()
-        {
-            List<Transaction> transactions = new List<Transaction>();
-
         }
 
         private void SaveBudget(UserBudget aBudget)
