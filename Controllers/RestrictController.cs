@@ -21,14 +21,28 @@ namespace FinanzCSU.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBudget()
         {
-            int userID = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(id => id.Type == ClaimTypes.Sid).Value);
+            if (ModelState.IsValid)
+            {
+                int userID = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(id => id.Type == ClaimTypes.Sid).Value);
 
-            UserBudget budget = new() { UserID = userID };
+                UserBudget budget = new() { UserID = userID };
+                try
+                {
+                    _context.Add(budget);
+                    await _context.SaveChangesAsync();
+                }
+                catch
+                {
+                    TempData["failure"] = $"Budget was not created";
+                    return RedirectToAction("Index", "Home");
+                }
 
-            _context.Add(budget);
+                TempData["success"] = $"Budget created";
 
-            return View();
+                return View();
+            }
 
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
@@ -38,13 +52,12 @@ namespace FinanzCSU.Controllers
 
             int userID = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
 
-            // Get the users budget
+            // Get the users budget including all allocations
 
             var budget = _context.UserBudgets
                 .Include(bgt => bgt.MonthlyAllocations)
-                .Include(bgt => bgt.Transactions)
-                .Where(t => t.UserID == userID)
-                .OrderBy(t => t.Transactions.monthId);
+                .Where(bgt => bgt.UserID == userID)
+                .OrderBy(bgt => bgt.MonthlyAllocations);
 
             return View();
         }
@@ -58,13 +71,12 @@ namespace FinanzCSU.Controllers
 
             // Get the users transactions
 
-            var orderDetails = _context.tblOrderDetails
-                .Include(od => od.OrderFKNavigation)
-                .Include(od => od.ProductFKNavigation)
-                .Where(u => u.OrderFKNavigation.CustomerFK == userPK)
-                .OrderBy(d => d.OrderFKNavigation.OrderDate);
+            var transactions = _context.Transactions
+                .Include(t => t.CategoryID)
+                .Where(u => u.UserBudget.UserID == userID)
+                .OrderBy(d => d.TransactionID);
 
-            return View(await orderDetails.ToListAsync());
+            return View(await transactions.ToListAsync());
         }
 
         [Authorize]
@@ -76,7 +88,7 @@ namespace FinanzCSU.Controllers
         [Authorize]
         public IActionResult AddTransaction()
         {
-            Transactions<Transaction> transactions = GetTransactions();
+            List<Transaction> transactions = GetTransactions();
 
             if (transactions.Any())
             {
@@ -119,6 +131,7 @@ namespace FinanzCSU.Controllers
         private List<Transaction> GetTransactions()
         {
             List<Transaction> transactions = new List<Transaction>();
+            return transactions;
 
         }
 
