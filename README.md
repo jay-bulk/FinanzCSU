@@ -9,15 +9,15 @@ Finanz (feen-anhts) DE: finance. A simple finance tracking application.
 ## Functionality:
 * Input actual expenses
 * Input projected expenses
-* Create expense categories
-* Delete expense categories
+* ~~Create expense categories~~
+* ~~Delete expense categories~~
 * Compare actual vs projected expenses by month
-* Compare actual vs projected expenses by year
-* Search for expenses by category
+* ~~Compare actual vs projected expenses by year~~
+* ~~Search for expenses by category~~
 
 ## Business Rules:
-* A user may not create duplicate categories (check like named members)
-* A user may not edit previous years expenses (closed book so to speak)
+* ~~A user may not create duplicate categories (check like named members)~~
+* ~~A user may not edit previous years expenses (closed book so to speak)~~
 * A user may edit current year expenses
 ~~* A user may edit current year projections~~
 
