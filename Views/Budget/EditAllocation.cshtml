@@ -1,10 +1,10 @@
-﻿@model IEnumerable<FinanzCSU.Models.Transaction>
+﻿@model IEnumerable<FinanzCSU.Models.MonthlyAllocation>
 
 @{
-    ViewData["Title"] = "EditTransaction";
+    ViewData["Title"] = "EditAllocation";
 }
 
-<h1>Finanz - Edit Transaction</h1>
+<h1>Finanz - Edit Allocation</h1>
 
 <hr />
 <div class="row">
@@ -23,12 +23,12 @@
                 <span asp-validation-for="MonthID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TransactionAmount" class="control-label">Mount</label>
-                <input asp-for="TransactionAmount" class="form-control" />
-                <span asp-validation-for="TransactionAmount" class="text-danger"></span>
+                <label asp-for="Allocation" class="control-label"></label>
+                <input asp-for="Allocation" class="form-control" />
+                <span asp-validation-for="Allocation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="EditTransaction" class="btn btn-primary" />
+                <input type="submit" value="EditAllocation" class="btn btn-primary" />
             </div>
         </form>
     </div>

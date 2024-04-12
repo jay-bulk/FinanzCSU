@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<FinanzCSU.Models.Transaction>
 
 @{
-    ViewData["Title"] = "EditTransaction";
+    ViewData["Title"] = "DeleteTransactions";
 }
 
-<h1>Finanz - Edit Transaction</h1>
+<h1>Finanz - Delete Transaction</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AllocationID" />
+            <input type="hidden" asp-for="UserBudgetID" />
             <div class="form-group">
                 <label asp-for="CategoryID" class="control-label">Category</label>
                 <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryName"></select>
@@ -23,12 +23,12 @@
                 <span asp-validation-for="MonthID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TransactionAmount" class="control-label">Mount</label>
+                <label asp-for="TransactionAmount" class="control-label">Amount</label>
                 <input asp-for="TransactionAmount" class="form-control" />
                 <span asp-validation-for="TransactionAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="EditTransaction" class="btn btn-primary" />
+                <input type="submit" value="DeleteTransaction" class="btn btn-primary" />
             </div>
         </form>
     </div>
