@@ -1,0 +1,50 @@
+﻿@model FinanzCSU.Models.LoginInfo
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<h1>Sign Up for an Account</h1>
+
+@if (ViewData["message"] != null)
+{
+    <div class="alert alert-danger">@ViewData["message"]</div>
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SignUp" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UName" class="control-label"></label>
+                <input asp-for="UName" class="form-control" />
+                <span asp-validation-for="UName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UPass" class="control-label"></label>
+                <input asp-for="UPass" class="form-control" />
+                <span asp-validation-for="UPass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                @Html.AntiForgeryToken()<input type="submit" value="Create Account" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Home">Cancel</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

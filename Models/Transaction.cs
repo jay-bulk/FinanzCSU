@@ -35,4 +35,6 @@ public partial class Transaction
     [ForeignKey("UserBudgetID")]
     [InverseProperty("Transactions")]
     public virtual UserBudget UserBudget { get; set; }
+
+
 }
