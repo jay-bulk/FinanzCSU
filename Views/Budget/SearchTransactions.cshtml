@@ -1,0 +1,60 @@
+﻿@model IEnumerable<FinanzCSU.Models.Transaction>
+
+@{
+    ViewData["Title"] = "SearchTransactions";
+}
+
+@{
+    var identity = Context.User.Identity;
+    bool isAuth = identity?.IsAuthenticated ?? false;
+}
+
+@if (Model.Any())
+{
+
+<h2>Search your prior transactions</h2>
+    @if (isAuth)
+    {
+        
+    <form asp-action="SearchTransactions" method="post">
+    <div class="form-actions no-color">
+        <p>
+            Filter By Category Name: <input maxlength="20" type="text" name="searchName" value="@ViewData["CategoryFilter"]" />
+            Month ID: <input type="text" min="0" max="1000" name="MonthID" value="@ViewData["MonthID"]" />
+            Transaction Amount: <input type="number" min="0" max="1000" name="TransactionAmount" value="@ViewData["TransactionAmount"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-action="SearchTransactions" class="btn btn-link">Search Transactions</a>
+        </p>
+    </div>
+</form>
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width:30%">
+                    Category
+                </th>
+                <th style="width:30%">
+                    Transaction Amount
+                </th>
+                <th style="width:40%">MonthID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td><a asp-action="Transaction" asp-route-id="@t.CategoryID">@t.CategoryID</a></td>
+                    <td style="text-align:right">@t.?TransactionAmount.ToString("c")</td>
+                    <td>@t.MonthID</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+}
+    else
+    {
+        <h1>You need to login first</h1>
+        <a asp-action="Login" class="btn btn primary">Login</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Back to Home</a>

@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "My Transactions";
 }
-
+@if (ViewData["message"] != null)
+{
+    <div class="alert alert-danger">@ViewData["message"]</div>
+}
 @{
     var identity = Context.User.Identity;
     bool isAuth = identity?.IsAuthenticated ?? false;

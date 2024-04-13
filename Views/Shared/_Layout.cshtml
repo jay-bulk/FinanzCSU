@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FinanzCSU.styles.css" asp-append-version="true" />
+
+    <style>
+    .navbar-nav .nav-link {
+        color: white !important;
+        }
+    </style>
 </head>
 
-}
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bd-body-tertiary bg-dark border-bottom box-shadow mb-3" data-bs-them="dark">
+        <nav class="navbar navbar-expand-lg bd-body-tertiary bg-dark" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FinanzCSU</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
@@ -29,15 +35,15 @@
                             {
 
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Budget" asp-action="Budget">My Budget</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Budget" asp-action="ViewBudget">My Budget</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Transaction"
-                                       asp-action="Transaction">Transactions</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Budget"
+                                       asp-action="MyTransactions">Transactions</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Category"
-                                       asp-action="Category">Categories</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Budget"
+                                       asp-action="SearchTransactions">Search</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>

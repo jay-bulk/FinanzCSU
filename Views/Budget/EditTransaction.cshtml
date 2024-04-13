@@ -1,7 +1,11 @@
-﻿@model IEnumerable<FinanzCSU.Models.Transaction>
+﻿@model FinanzCSU.Models.Transaction
 
 @{
     ViewData["Title"] = "EditTransaction";
+}
+@if (ViewData["message"] != null)
+{
+    <div class="alert alert-danger">@ViewData["message"]</div>
 }
 
 <h1>Finanz - Edit Transaction</h1>
@@ -11,7 +15,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AllocationID" />
+            <input type="hidden" asp-for="TransactionID" />
             <div class="form-group">
                 <label asp-for="CategoryID" class="control-label">Category</label>
                 <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryName"></select>

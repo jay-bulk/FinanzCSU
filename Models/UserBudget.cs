@@ -12,6 +12,11 @@ namespace FinanzCSU.Models;
 public partial class UserBudget
 {
     [Key]
+    public int AllocationID { get; set; }
+    public int CategoryID { get; set; }
+    public int MonthID { get; set; }
+    public int Allocation { get; set; }
+
     public int UserBudgetID { get; set; }
 
     public int BudgetID { get; set; }

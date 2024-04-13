@@ -50,33 +50,33 @@
         </thead>
         @if (isAuth)
         {
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MonthID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AllocationID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Allocation)
-                    </td>
-                    <td>
-                        <a asp-action="EditAllocation" class="btn btn-primary" asp-route-id="@item.Allocation">Edit Category Allocation</a>  |
-                        <a asp-action="DeleteAllocation" class="btn btn-warning" asp-route-id="@item.Allocation">Delete Category Allocation</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MonthID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AllocationID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Allocation)
+                        </td>
+                        <td>
+                            <a asp-action="EditAllocation" class="btn btn-primary" asp-route-id="@item.Allocation">Edit Category Allocation</a>  |
+                            <a asp-action="DeleteAllocation" class="btn btn-warning" asp-route-id="@item.Allocation">Delete Category Allocation</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         }
     </table>
     <a asp-action="AddAllocation" asp-controller="Budget" asp-route-id="" class="btn btn-primary">Add an allocation</a>
-    <br/>
+    <br />
     <h1>Transaction Tracker</h1>
 }
 else

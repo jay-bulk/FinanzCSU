@@ -1,7 +1,11 @@
-﻿@model IEnumerable<FinanzCSU.Models.MonthlyAllocation>
+﻿@model FinanzCSU.Models.MonthlyAllocation
 
 @{
     ViewData["Title"] = "EditAllocation";
+}
+@if (ViewData["message"] != null)
+{
+    <div class="alert alert-danger">@ViewData["message"]</div>
 }
 
 <h1>Finanz - Edit Allocation</h1>

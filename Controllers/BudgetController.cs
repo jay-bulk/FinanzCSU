@@ -47,7 +47,7 @@ namespace FinanzCSU.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> MyBudget()
+        public IActionResult ViewBudget()
         {
             // Get the user's id from the session store
 
@@ -56,9 +56,11 @@ namespace FinanzCSU.Controllers
             // Get the users budget including all allocations
 
             var budget = _context.UserBudgets
-                .Include(bgt => bgt.MonthlyAllocations)
-                .Where(bgt => bgt.UserID == userID)
-                .OrderBy(bgt => bgt.MonthlyAllocations);
+                        .Include(bgt => bgt.MonthlyAllocations)
+                        .Where(bgt => bgt.UserID == userID)
+                        .AsEnumerable() // Materialize the results
+                        .OrderBy(bgt => bgt.MonthlyAllocations.Count()); // Order by a property within MonthlyAllocations
+
 
             // If the user doesn't have a budget send them back 
             if (budget == null)
@@ -67,7 +69,7 @@ namespace FinanzCSU.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            return View(budget.ToList());
         }
 
         [Authorize]
@@ -153,7 +155,7 @@ namespace FinanzCSU.Controllers
             if (userBudget == null)
             {
                 TempData["failure"] = $"User budget needs to be created first";
-                return RedirectToAction(nameof(MyBudget));
+                return RedirectToAction(nameof(ViewBudget));
             }
 
             if (ModelState.IsValid)
@@ -168,16 +170,16 @@ namespace FinanzCSU.Controllers
                 catch
                 {
                     TempData["failure"] = $"Failed to save allocation for {categoryName}";
-                    return RedirectToAction(nameof(MyBudget));
+                    return RedirectToAction(nameof(ViewBudget));
                 }
 
                 TempData["success"] = $"{categoryName} allocation saved for {allocation.MonthID}";
-                return RedirectToAction(nameof(MyBudget));
+                return RedirectToAction(nameof(ViewBudget));
             }
             ViewData["UserBudget"] = userBudget;
             ViewData["Categories"] = CategoryList();
 
-            return View(MyBudget);
+            return View(ViewBudget);
         }
 
         private List<SelectListItem> CategoryList(int categoryID = 0)
@@ -220,6 +222,40 @@ namespace FinanzCSU.Controllers
             MonthList.Insert(0, (new SelectListItem { Text = "Select Month Name", Value = "" }));
 
             return MonthList;
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SearchTransactions(int? categoryID, string? monthID, decimal? transactionAmount)
+        {
+
+            int userID = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
+            ViewData["CategoryID"] = categoryID;
+            ViewData["MonthID"] = monthID;
+            ViewData["TransactionAmount"] = transactionAmount;
+
+            var transactions = from t in _context.Transactions select t;
+            var userBudget = _context.UserBudgets.FirstOrDefault(b => b.UserBudgetID == userID);
+
+            if (categoryID != null)
+            {
+                transactions = transactions.Where(t => t.CategoryID == categoryID)
+                    .Where(t => t.UserBudgetID == userBudget.UserBudgetID);
+            }
+            if (monthID != null)
+            {
+                transactions = transactions.Where(t => t.MonthID == monthID)
+                                        .Where(t => t.UserBudgetID == userBudget.UserBudgetID);
+
+            }
+            if (transactionAmount != null)
+            {
+                transactions = transactions.Where(t => t.TransactionAmount == transactionAmount)
+                                        .Where(t => t.UserBudgetID == userBudget.UserBudgetID);
+
+            }
+
+            return View(await transactions.ToListAsync());
         }
     }
 }
